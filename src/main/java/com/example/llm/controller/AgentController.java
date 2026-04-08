@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Agent", description = "AI Agent Interaction")
+@Tag(name = "AI 智能体", description = "与具备业务操作和知识库能力的 AI 助手交互")
 @RestController
 @RequestMapping("/v1/agent")
 @RequiredArgsConstructor
@@ -18,7 +18,7 @@ public class AgentController {
 
     private final WorkAssistantAgent agent;
 
-    @Operation(summary = "Ask the Office Assistant Agent")
+    @Operation(summary = "咨询办公助手（支持 RAG 与 数据库查询）")
     @GetMapping("/ask")
     public Result<String> askAgent(@RequestParam String prompt) {
         String response = agent.chat(prompt);

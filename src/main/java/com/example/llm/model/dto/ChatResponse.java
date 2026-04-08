@@ -34,8 +34,8 @@ public class ChatResponse {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Usage {
-        private Integer prompt_tokens;
-        private Integer completion_tokens;
-        private Integer total_tokens;
+        private Integer promptTokens;
+        private Integer completionTokens;
+        private Integer totalTokens;
     }
 }

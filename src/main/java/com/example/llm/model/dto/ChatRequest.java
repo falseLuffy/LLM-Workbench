@@ -13,18 +13,18 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ChatRequest {
-    private String model;
-    private List<Message> messages;
-    private Double temperature;
-    private Double top_p;
-    private Integer n;
-    private Boolean stream;
-    private List<String> stop;
-    private Integer max_tokens;
-    private Double presence_penalty;
-    private Double frequency_penalty;
-    private Map<String, Integer> logit_bias;
-    private String user;
+    private String model;            // 使用的模型名称 (如 deepseek-chat)
+    private List<Message> messages; // 消息列表（对话上下文）
+    private Double temperature;     // 采样温度 (0-2)
+    private Double top_p;          // 核采样概率
+    private Integer n;             // 为每条输入生成多少条结果
+    private Boolean stream;         // 是否流式输出
+    private List<String> stop;     // 停止生成序列
+    private Integer max_tokens;    // 最大生成 Token 数
+    private Double presence_penalty; // 话题存在惩罚
+    private Double frequency_penalty; // 频率重复惩罚
+    private Map<String, Integer> logit_bias; // 调整特定 Token 的出现概率
+    private String user;           // 终端用户 ID
 
     @Data
     @Builder

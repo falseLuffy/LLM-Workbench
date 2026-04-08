@@ -54,8 +54,8 @@ logging:
     timeout: 5000
 
 llm:
-  openai:
-    api-key: ${OPENAI_API_KEY:sk-your-key}
-    base-url: ${OPENAI_BASE_URL:https://api.openai.com/v1}
+  deepseek:
+    api-key: ${DEEPSEEK_API_KEY:sk-your-deepseek-key}
+    base-url: ${DEEPSEEK_BASE_URL:https://api.deepseek.com}
 
 

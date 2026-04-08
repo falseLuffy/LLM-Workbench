@@ -19,6 +19,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
             .antMatchers("/sys/health").permitAll()
             .antMatchers("/v1/proxy/data/**").permitAll()
+            .antMatchers("/v1/proxy/knowledge/**").permitAll()
+            .antMatchers("/v1/proxy/stats/**").permitAll()
             .antMatchers("/v1/agent/**").permitAll()
             .antMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/api-docs/**").permitAll()
             .anyRequest().authenticated();

@@ -8,6 +8,8 @@ import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.model.openai.OpenAiChatModel;
 import dev.langchain4j.model.openai.OpenAiEmbeddingModel;
+import dev.langchain4j.rag.content.retriever.ContentRetriever;
+import dev.langchain4j.rag.content.retriever.EmbeddingStoreContentRetriever;
 import dev.langchain4j.service.AiServices;
 import dev.langchain4j.store.embedding.EmbeddingStore;
 import dev.langchain4j.store.embedding.inmemory.InMemoryEmbeddingStore;
@@ -22,28 +24,33 @@ import java.nio.file.Paths;
 @Configuration
 public class LangChain4jConfig {
 
-    @Value("${llm.openai.api-key:sk-your-key}")
+    @Value("${llm.deepseek.api-key:sk-your-deepseek-key}")
     private String apiKey;
 
-    @Value("${llm.openai.base-url:https://api.openai.com/v1}")
+    @Value("${llm.deepseek.base-url:https://api.deepseek.com}")
     private String baseUrl;
 
     public static final String CACHE_FILE = "semantic-cache.json";
 
     @Bean
     public ChatLanguageModel chatLanguageModel() {
+        // DeepSeek 深度求索兼容 OpenAI 协议
         return OpenAiChatModel.builder()
                 .apiKey(apiKey)
                 .baseUrl(baseUrl)
-                .modelName("gpt-4o") // Use gpt-4o for complex reasoning as an agent
+                .modelName("deepseek-chat") // DeepSeek 主聊天模型
                 .build();
     }
 
+    /**
+     * 注意：DeepSeek 官方目前不直接提供 Embedding API。
+     * 我们保留通用的 OpenAI 向量模型（或者您可以切换为本地 BGE/all-MiniLM 运行）
+     */
     @Bean
     public EmbeddingModel embeddingModel() {
         return OpenAiEmbeddingModel.builder()
-                .apiKey(apiKey)
-                .baseUrl(baseUrl)
+                .apiKey(apiKey) // 如果 Embedding 使用不同的 Key，请在此修改
+                .baseUrl("https://api.openai.com/v1") // 保留 OpenAI 用于向量计算或使用本地模型
                 .modelName("text-embedding-3-small")
                 .build();
     }
@@ -59,15 +66,25 @@ public class LangChain4jConfig {
         }
     }
 
-    /**
-     * Assemble the WorkAssistantAgent
-     */
     @Bean
-    public WorkAssistantAgent workAssistantAgent(ChatLanguageModel chatModel, DatabaseTools databaseTools) {
+    public ContentRetriever contentRetriever(EmbeddingStore<TextSegment> embeddingStore, EmbeddingModel embeddingModel) {
+        return EmbeddingStoreContentRetriever.builder()
+                .embeddingStore(embeddingStore)
+                .embeddingModel(embeddingModel)
+                .maxResults(3)
+                .minScore(0.7)
+                .build();
+    }
+
+    @Bean
+    public WorkAssistantAgent workAssistantAgent(ChatLanguageModel chatModel, 
+                                                 DatabaseTools databaseTools, 
+                                                 ContentRetriever contentRetriever) {
         return AiServices.builder(WorkAssistantAgent.class)
                 .chatLanguageModel(chatModel)
-                .tools(databaseTools) // Give the agent its "hands" (database tools)
-                .chatMemory(MessageWindowChatMemory.withMaxMessages(10)) // Give the agent short-term memory
+                .tools(databaseTools)
+                .contentRetriever(contentRetriever)
+                .chatMemory(MessageWindowChatMemory.withMaxMessages(10)) 
                 .build();
     }
 }

@@ -20,13 +20,13 @@ public class DatabaseTools {
 
     @Tool("查询系统中所有活跃（未删除）用户的总数")
     public Long getTotalUserCount() {
-        log.info("🤖 Agent is calling: getTotalUserCount");
+        log.info("🤖 智能体正在调用工具: 查询用户总数");
         return userMapper.selectCount(new LambdaQueryWrapper<User>().eq(User::getStatus, 1));
     }
 
     @Tool("根据用户名或昵称搜索用户信息")
     public String searchUserByName(String name) {
-        log.info("🤖 Agent is calling: searchUserByName with [{}]", name);
+        log.info("🤖 智能体正在调用工具: 搜索用户 [ {} ]", name);
         List<User> users = userMapper.selectList(new LambdaQueryWrapper<User>()
                 .like(User::getUsername, name)
                 .or()

@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.Map;
 
-@Tag(name = "System", description = "System management endpoints")
+@Tag(name = "系统管理", description = "系统运行状态与监控接口")
 @RestController
 @RequestMapping("/sys")
 public class HealthController {
 
-    @Operation(summary = "Health check")
+    @Operation(summary = "健康检查")
     @GetMapping("/health")
     public Result<Map<String, String>> health() {
         Map<String, String> status = new HashMap<>();

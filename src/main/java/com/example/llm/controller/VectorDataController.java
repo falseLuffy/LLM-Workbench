@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Collections;
 import java.util.List;
 
-@Tag(name = "Data Management", description = "Endpoints for managing vector cache data")
+@Tag(name = "数据管理", description = "用于手动维护向量缓存协议的接口")
 @RestController
 @RequestMapping("/v1/proxy/data")
 @RequiredArgsConstructor
@@ -24,7 +24,7 @@ public class VectorDataController {
 
     private final LlmOptimizationService optimizationService;
 
-    @Operation(summary = "Batch inject pre-defined Q&A pairs into vector cache")
+    @Operation(summary = "批量投喂预定义的问答对（Q&A）到向量缓存")
     @PostMapping("/inject")
     public Result<String> injectData(@RequestBody List<InjectionData> dataList) {
         if (dataList == null || dataList.isEmpty()) {
