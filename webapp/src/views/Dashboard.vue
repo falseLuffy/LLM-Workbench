@@ -22,6 +22,9 @@
         <el-menu-item index="3">
           <span>令牌消耗统计</span>
         </el-menu-item>
+        <el-menu-item index="4">
+          <span style="color: #409EFF; font-weight: bold;">使用文档</span>
+        </el-menu-item>
       </el-menu>
     </el-aside>
 
@@ -277,6 +280,10 @@ onMounted(async () => {
 })
 
 const handleMenuSelect = (index) => {
+  if (index === '4') {
+    router.push('/docs')
+    return
+  }
   activeIndex.value = index
   if (index === '2') fetchApiKeys()
   if (index === '3') fetchStats()
