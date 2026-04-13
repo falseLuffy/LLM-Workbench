@@ -60,4 +60,4 @@ llm:
 
 jwt:
   secret: ZTE2ZGM3OGZmZGNhYzUzZmQ4NmQ5Zjc3OTNlMjg4OTE4NGZlNjhhNzU4YzZmNmMwOTkyZDVkNTUzNDVlODNmMWEyZGFiZWVlMzdiZGY0NDFkODM0MzUzNzUxOWRkNTg5
-  expiration: 86400 # 24 hours in seconds
+  expiration: 1800 # 30 minutes in seconds
